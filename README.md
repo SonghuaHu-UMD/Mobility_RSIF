@@ -1,5 +1,7 @@
 # Mobile device location data reveal human mobility response to state-level stay-at-home orders during the COVID-19 pandemic in the USA
 
+#### Chenfeng Xiong, Songhua Hu, Mofeng Yang, Hannah Younes, Weiyu Luo, Sepehr Ghader and Lei Zhang
+
 This study uses an integrated dataset, consisting of anonymized and privacy-protected location data from over 150 
 million monthly active samples in the USA, COVID-19 case data and census population information, to uncover mobility changes during
 COVID-19 and under the stay-at-home state orders in the USA. The study successfully quantifies human mobility responses with three important
