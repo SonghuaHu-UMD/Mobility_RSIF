@@ -118,5 +118,5 @@ state_level_variables.to_csv('state_level_variables_to_R1.csv', index=False)
 # state_level_variables.drop_duplicates(subset=['STNAME']).describe()
 
 # Describe
-state_level_variables = pd.read_csv('state_level_variables_to_R1.csv', index_col=0)
+state_level_variables = pd.read_csv('data/state_level_variables_to_R1.csv', index_col=0)
 state_level_variables.describe().T.to_csv('state_level_variables_desc.csv')

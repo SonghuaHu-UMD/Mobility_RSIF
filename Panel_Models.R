@@ -71,7 +71,6 @@ plot(Predict_agg_sub$Time_Index, Predict_agg_sub$Diff_Enforce,type='b',col='gree
 lines(Predict_agg_sub$Time_Index, Predict_agg_sub$Diff_Case, col="red",type='b',lwd=2)
 
 
-
 # Visulazation
 b <- getViz(GAM_RES1)
 print(plot(b, allTerms = T), pages = 1) # Calls print.plotGam()
@@ -130,11 +129,6 @@ ggplot(Predict_agg_sub, aes(x = Time_Index, y = adetal1_nocase)) +
   theme_bw(base_size = 16) +  # changes default theme
   xlab("Number of Days") +  # changes x-axis label
   ylab("Model Implied Values")   # changes y-axis label
-
-
-
-
-
 
 
 
