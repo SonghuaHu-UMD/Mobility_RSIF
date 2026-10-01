@@ -25,8 +25,8 @@ ALL_NEG = pd.DataFrame()
 for index, country in State_shp.iterrows():
     # get 'not disjoint' countries
     neighbors = State_shp[~State_shp.geometry.disjoint(country.geometry)].STATEFP.tolist()
-NEG = pd.DataFrame({'STFIPS': [country.STATEFP] * len(neighbors), 'Near_STFIPS': neighbors})
-ALL_NEG = ALL_NEG.append(NEG)
+    NEG = pd.DataFrame({'STFIPS': [country.STATEFP] * len(neighbors), 'Near_STFIPS': neighbors})
+    ALL_NEG = pd.concat([ALL_NEG, NEG], ignore_index=True)
 ALL_NEG = ALL_NEG[ALL_NEG['STFIPS'] != ALL_NEG['Near_STFIPS']].reset_index(drop=True)
 ALL_NEG = ALL_NEG.astype(int)
 
@@ -94,13 +94,13 @@ state_level_variables = state_level_variables.merge(Approval, on='STNAME', how='
 state_level_variables['Population'] = state_level_variables['Num_Trips'] / state_level_variables['ANum_Trips']
 state_level_variables['Approval'] = state_level_variables['Approval'] / 100
 state_level_variables.loc[state_level_variables['STNAME'] == 'OK(N)', 'Approval'] = \
-    list(Approval[Approval['STNAME'] == 'OK']['Approval'])[0]
+    list(Approval[Approval['STNAME'] == 'OK']['Approval'])[0] / 100
 state_level_variables.loc[state_level_variables['STNAME'] == 'OK(Y)', 'Approval'] = \
-    list(Approval[Approval['STNAME'] == 'OK']['Approval'])[0]
+    list(Approval[Approval['STNAME'] == 'OK']['Approval'])[0] / 100
 state_level_variables.loc[state_level_variables['STNAME'] == 'UT(N)', 'Approval'] = \
-    list(Approval[Approval['STNAME'] == 'UT']['Approval'])[0]
+    list(Approval[Approval['STNAME'] == 'UT']['Approval'])[0] / 100
 state_level_variables.loc[state_level_variables['STNAME'] == 'UT(Y)', 'Approval'] = \
-    list(Approval[Approval['STNAME'] == 'UT']['Approval'])[0]
+    list(Approval[Approval['STNAME'] == 'UT']['Approval'])[0] / 100
 
 # Add total cases
 ALLcases = State_Data_Raw.groupby(['date']).sum()['#COVID-19 cases'].reset_index()

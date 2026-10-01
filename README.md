@@ -22,3 +22,10 @@ daily average PMT across all states.
 #### Estimated daily person-miles travelled increase/reduction at the national level and for each state
 ![F1](figures/results.png "results")
 
+## Result calculation and rerun protocol
+
+Run R scripts from the repository root. Shared `model_protocol.R` uses the included data by default; set `RSIF_DATA_PATH`/`RSIF_OUTPUT_DIR` to override. All states are included by default. An optional `RSIF_EXCLUSIONS` CSV must specify STNAME and a reason; required-model complete-case/nonfinite exclusions are recorded per row in population-coverage CSVs. Missing observations are never blanket-filled with zero.
+
+`Final_GAM2.R` alone writes the main prediction CSVs, with adjusted R2/EDF/residual DF and provenance from the same full GAM fit. `Plot_Fig56.py` requires those statistics and does not rewrite observations or retain only effects of one sign. Effects average all policy days. The grid accommodates all included states.
+
+Bootstrap draws resample complete state blocks (seed 0), preserve term names and draw IDs, log failed fits, and export 95% percentile intervals of within-draw coefficient contrasts; fewer than 90% successful pairs produces NA with a status. Bootstrap output never overwrites main-fit prediction files. Regenerate model and bootstrap outputs and plots. State_Features.py also fixes adjacent-state accumulation and consistent Approval units; regenerating those derived inputs requires the original source data. Existing public data and figures were not silently rewritten.

@@ -4,23 +4,8 @@ library(psych)
 library(dplyr)
 library(mgcViz)
 
-dat <-
-  read.csv('D:/COVID-19/First_Paper_State_Stay_at_Home/state_level_variables_to_R1.csv')
-
-dat[is.na(dat)] <- 0
-colnames(dat)
-dat$Week <- as.factor(dat$Week)
-dat$STFIPS <- as.factor(dat$STFIPS)
-dat$STNAME <- as.factor(dat$STNAME)
-dat$Enforcement <- as.factor(dat$Enforcement)
-dat$FEMA <- as.factor(dat$FEMA)
-dat$Is_Weekend <- as.factor(dat$Is_Weekend)
-dat$Stay_at_home <- as.factor(dat$Stay_at_home)
-
-dat <- dat[dat$STNAME!='UT(Y)',]
-dat <- dat[dat$STNAME!='OK(Y)',]
-dat <- dat[dat$STNAME!='OK(N)',]
-dat <- dat[dat$STNAME!='OK(N)',]
+source("model_protocol.R")
+dat <- prepare_rsif("panel")
 
 # GAM
 GAM_RES1 <-
@@ -45,8 +30,7 @@ abline(lm(dat$predict~dat$ANum_Trips), col="red")
 
 # Let Enforcement to 0
 dat1 <- dat
-dat1$Enforcement = 0
-dat1$Enforcement <- as.factor(dat1$Enforcement)
+dat1$Enforcement <- factor(rep("0", nrow(dat1)), levels=levels(dat$Enforcement))
 dat$predict_noEnforce <- predict(GAM_RES1,dat1)
 sum(dat$predict_noEnforce-dat$predict)
 dat$Diff_Enforce <- (dat$predict-dat$predict_noEnforce)/dat$predict # The contribute of the enforcement on trip increasement
@@ -91,8 +75,7 @@ Predict_agg <- dat %>%
 
 # Let Enforcement to 0
 dat1 <- dat
-dat1$Enforcement = 0
-dat1$Enforcement <- as.factor(dat1$Enforcement)
+dat1$Enforcement <- factor(rep("0", nrow(dat1)), levels=levels(dat$Enforcement))
 pred3 <- as.vector(predict.gam(GAM_RES1,dat1))
 Predict_agg <- Predict_agg %>%
   mutate(pred_no_enforce=pred3)
